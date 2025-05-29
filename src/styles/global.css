@@ -1,0 +1,134 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2;
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} 
+
+body.dark-mode {
+  background: #232323;
+  color: #f2f2f2;
+}
+body.light-mode {
+  background: #f2f2f2;
+  color: #232323;
+}
+
+/* Modern upload UI theme support */
+.dark-mode .modern-upload-row {
+  background: #232323;
+}
+.dark-mode .modern-query-input {
+  background: #232323;
+  color: #f2f2f2;
+}
+.dark-mode .modern-upload-message {
+  color: #e6e6e6;
+}
+.dark-mode .modern-clip-btn {
+  background: #181818;
+}
+.dark-mode .modern-submit-btn {
+  background: #a36a4f;
+}
+.dark-mode .selected-file-label {
+  background: #232323;
+  color: #bbb;
+}
+
+.light-mode .modern-upload-row {
+  background: #fff;
+}
+.light-mode .modern-query-input {
+  background: #fff;
+  color: #232323;
+}
+.light-mode .modern-upload-message {
+  color: #232323;
+}
+.light-mode .modern-clip-btn {
+  background: #f2f2f2;
+}
+.light-mode .modern-submit-btn {
+  background: #a36a4f;
+}
+.light-mode .selected-file-label {
+  background: #fff;
+  color: #666;
+} 
