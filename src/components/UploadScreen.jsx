@@ -61,8 +61,33 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
 
   if (minimalUpload) {
     return (
-      <div className="modern-upload-wrapper">
-        <div className="modern-upload-message" style={{ color: isDarkMode ? '#e6e6e6' : '#232323' }}>CSV and Report time?</div>
+      <div 
+        className="modern-upload-wrapper"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          width: '100%',
+          padding: '2rem',
+          boxSizing: 'border-box',
+          position: 'relative',
+          paddingTop: '120px', // Account for fixed menu bar
+        }}
+      >
+        <div 
+          className="modern-upload-message" 
+          style={{ 
+            color: isDarkMode ? '#e6e6e6' : '#232323',
+            textAlign: 'center',
+            marginBottom: '2rem',
+            fontSize: '1.5rem',
+            fontWeight: '600'
+          }}
+        >
+          CSV and Report time?
+        </div>
         <form onSubmit={handleFormSubmit} className="modern-upload-form">
           <div
             className="modern-upload-row modern-upload-row-redesign"
@@ -74,9 +99,19 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
               maxWidth: 700,
               width: '100%',
               justifyContent: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
-            <div className="modern-query-container">
+            <div 
+              className="modern-query-container"
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '600px',
+              }}
+            >
             <button
               type="button"
                 className="modern-clip-btn redesigned"
@@ -131,23 +166,45 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
           </div>
           </div>
           {selectedFiles.length > 0 && (
-            <div className="selected-files-container" style={{ marginTop: 10, width: '100%' }}>
+            <div 
+              className="selected-files-container" 
+              style={{ 
+                marginTop: 20, 
+                width: '100%', 
+                maxWidth: '600px',
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+            >
               {selectedFiles.map((file, idx) => (
-                <div key={idx} className="selected-file-label" style={{ display: 'inline-block', marginRight: 8, position: 'relative', background: isDarkMode ? '#181818' : '#f2f2f2', color: isDarkMode ? '#bbb' : '#232323', borderRadius: 4, padding: '2px 8px', fontSize: 13 }}>
+                <div key={idx} className="selected-file-label" style={{ display: 'inline-block', position: 'relative', background: isDarkMode ? '#181818' : '#f2f2f2', color: isDarkMode ? '#bbb' : '#232323', borderRadius: 4, padding: '2px 8px', fontSize: 13 }}>
                   {file.name}
                   <button type="button" aria-label="Remove file" style={{ marginLeft: 6, background: 'none', border: 'none', color: '#a36a4f', cursor: 'pointer', fontWeight: 'bold', fontSize: 15, position: 'relative', top: 1 }} onClick={e => { e.stopPropagation(); handleRemoveFile(idx) }}>×</button>
                 </div>
               ))}
             </div>
           )}
-          {error && <div className="error-message">{error}</div>}
+          {error && (
+            <div 
+              className="error-message"
+              style={{
+                marginTop: '1rem',
+                textAlign: 'center',
+                maxWidth: '600px'
+              }}
+            >
+              {error}
+            </div>
+          )}
         </form>
       </div>
     )
   }
 
   return (
-    <>
+    <div style={{ paddingTop: '80px' }}>
       <div
         className={`file-upload-area${dragActive ? ' active' : ''}`}
         onDragOver={handleDragOver}
@@ -197,7 +254,7 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
         </button>
       </form>
       {error && <div className="error-message">{error}</div>}
-    </>
+    </div>
   )
 }
 

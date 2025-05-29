@@ -9,7 +9,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f2f2f2;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 #root {
@@ -25,9 +26,9 @@ body {
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: #000000;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -37,98 +38,126 @@ body {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #007bff;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #0056b3;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: #000000;
 }
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid #e0e0e0;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #ffffff;
+  color: #000000;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #007bff;
+  background-color: #f8f9fa;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} 
-
+/* Force light mode styles */
 body.dark-mode {
-  background: #232323;
-  color: #f2f2f2;
+  background: #ffffff !important;
+  color: #000000 !important;
 }
 body.light-mode {
-  background: #f2f2f2;
-  color: #232323;
+  background: #ffffff;
+  color: #000000;
 }
 
-/* Modern upload UI theme support */
+/* Modern upload UI theme support - all light mode */
+.modern-upload-row {
+  background: #ffffff;
+}
+.modern-query-input {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #e0e0e0;
+}
+.modern-upload-message {
+  color: #000000;
+}
+.modern-clip-btn {
+  background: #f8f9fa;
+  color: #000000;
+  border: 1px solid #e0e0e0;
+}
+.modern-submit-btn {
+  background: #007bff;
+  color: #ffffff;
+}
+.selected-file-label {
+  background: #ffffff;
+  color: #666666;
+  border: 1px solid #e0e0e0;
+}
+
+/* Override any dark mode styles */
 .dark-mode .modern-upload-row {
-  background: #232323;
+  background: #ffffff !important;
 }
 .dark-mode .modern-query-input {
-  background: #232323;
-  color: #f2f2f2;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #e0e0e0 !important;
 }
 .dark-mode .modern-upload-message {
-  color: #e6e6e6;
+  color: #000000 !important;
 }
 .dark-mode .modern-clip-btn {
-  background: #181818;
+  background: #f8f9fa !important;
+  color: #000000 !important;
+  border: 1px solid #e0e0e0 !important;
 }
 .dark-mode .modern-submit-btn {
-  background: #a36a4f;
+  background: #007bff !important;
+  color: #ffffff !important;
 }
 .dark-mode .selected-file-label {
-  background: #232323;
-  color: #bbb;
+  background: #ffffff !important;
+  color: #666666 !important;
+  border: 1px solid #e0e0e0 !important;
 }
 
 .light-mode .modern-upload-row {
-  background: #fff;
+  background: #ffffff;
 }
 .light-mode .modern-query-input {
-  background: #fff;
-  color: #232323;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #e0e0e0;
 }
 .light-mode .modern-upload-message {
-  color: #232323;
+  color: #000000;
 }
 .light-mode .modern-clip-btn {
-  background: #f2f2f2;
+  background: #f8f9fa;
+  color: #000000;
+  border: 1px solid #e0e0e0;
 }
 .light-mode .modern-submit-btn {
-  background: #a36a4f;
+  background: #007bff;
+  color: #ffffff;
 }
 .light-mode .selected-file-label {
-  background: #fff;
-  color: #666;
+  background: #ffffff;
+  color: #666666;
+  border: 1px solid #e0e0e0;
 } 

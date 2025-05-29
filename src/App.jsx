@@ -4,8 +4,11 @@ import ChatScreen from './components/ChatScreen.jsx'
 import SessionHistory from './components/SessionHistory.jsx'
 import { useState, useEffect } from 'react'
 import HistoryDropdown from './components/HistoryDropdown.jsx'
+import vcyberizLogo from './assets/vcyberiz-logo.png'
+import { useNavigate } from 'react-router-dom'
 
 function App() {
+  const navigate = useNavigate()
   const [selectedFiles, setSelectedFiles] = useState([])
   const [query, setQuery] = useState('')
   const [response, setResponse] = useState(null)
@@ -21,17 +24,12 @@ function App() {
   const [sessionId, setSessionId] = useState(null)
   const [sessionRestored, setSessionRestored] = useState(false)
 
-  // Toggle light/dark mode based on hour
+  // Set consistent white background theme
   useEffect(() => {
-    const now = new Date()
-    const hour = now.getHours()
-    if (hour >= 18 || hour < 6) {
-      document.body.classList.add('dark-mode')
-      document.body.classList.remove('light-mode')
-    } else {
-      document.body.classList.add('light-mode')
-      document.body.classList.remove('dark-mode')
-    }
+    document.body.classList.remove('dark-mode')
+    document.body.classList.add('light-mode')
+    document.body.style.backgroundColor = '#ffffff'
+    document.body.style.color = '#000000'
   }, [])
 
   // Load session from localStorage on app start
@@ -353,8 +351,100 @@ function App() {
     }
   }
 
+  // Logout function
+  const handleLogout = () => {
+    // Clear all app state
+    setSelectedFiles([])
+    setQuery('')
+    setResponse(null)
+    setChartData(null)
+    setSubmitted(false)
+    setError(null)
+    setSubmitting(false)
+    setResponseVisible(false)
+    setHistory([])
+    setChatHistory([])
+    setCsvColumns([])
+    setSessionId(null)
+    setSessionRestored(false)
+    
+    // Clear localStorage - this is the key part for proper logout
+    localStorage.removeItem('currentSessionId')
+    localStorage.removeItem('chatHistory')
+    localStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('loginTime')
+    localStorage.removeItem('loginAttempts')
+    localStorage.removeItem('lockoutTime')
+    
+    // Dispatch custom logout event to notify PasswordProtect component
+    window.dispatchEvent(new Event('logout'))
+    
+    // Navigate to login page
+    navigate('/login', { replace: true })
+  }
+
   return (
     <>
+      {/* Fixed Menu Bar */}
+      <div className="menu-bar">
+        <div className="menu-left-section">
+          <button
+            onClick={handleLogout}
+            style={{
+              background: '#fff',
+              color: '#000',
+              border: 'none',
+              borderRadius: '0.5rem',
+              padding: '0.5rem 1rem',
+              fontSize: '0.875rem',
+              fontWeight: '500',
+              cursor: 'pointer',
+              transition: '0.2s',
+              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-1px)'
+              e.target.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.15)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0px)'
+              e.target.style.boxShadow = '0px 2px 4px rgba(0, 0, 0, 0.1)'
+            }}
+          >
+            🔓 Logout
+          </button>
+        </div>
+        
+        <div className="menu-center-section">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <img 
+              src={vcyberizLogo} 
+              alt="vcyberiz Logo" 
+              className="menu-screenshot"
+              style={{
+                height: '40px',
+                width: 'auto',
+                borderRadius: '4px',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
+        </div>
+        
+        <div className="menu-bar-actions">
+          <HistoryDropdown history={history} onSelect={handleHistorySelect} />
+          <button
+            className="menu-new-chat-btn"
+            onClick={handleNewChat}
+          >
+            + New
+          </button>
+        </div>
+      </div>
+
       {/* Session Restored Notification */}
       {sessionRestored && (
         <div style={{
@@ -391,45 +481,7 @@ function App() {
         </div>
       )}
       
-      <div className="menu-bar">
-        <div className="menu-left-section">
-          <img 
-            src="/Screenshot 2025-05-27 at 12.11.20.png" 
-            alt="Screenshot" 
-            className="menu-screenshot"
-            style={{
-              height: '40px',
-              width: 'auto',
-              borderRadius: '4px',
-              objectFit: 'contain'
-            }}
-          />
-          {submitted && (
-            <button
-              className="menu-back-btn"
-              onClick={handleBack}
-            >
-              ← Back
-            </button>
-          )}
-        </div>
-        <div className="menu-bar-actions">
-          <HistoryDropdown history={history} onSelect={handleHistorySelect} />
-          <button
-            className="menu-history-btn"
-            onClick={() => setShowSessionHistory(true)}
-          >
-            📊 History
-          </button>
-          <button
-            className="menu-new-chat-btn"
-            onClick={handleNewChat}
-          >
-            + New
-          </button>
-        </div>
-      </div>
-      {!submitted ? (
+      {!submitted && (
         <UploadScreen
           selectedFiles={selectedFiles}
           onFileChange={handleUpload}
@@ -440,7 +492,9 @@ function App() {
           error={error}
           minimalUpload
         />
-      ) : (
+      )}
+      
+      {submitted && (
         <ChatScreen
           submitted={submitted}
           response={response}

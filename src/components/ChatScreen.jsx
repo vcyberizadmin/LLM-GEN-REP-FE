@@ -1,4 +1,4 @@
-import React, { useState, memo, useMemo } from 'react'
+import React, { useState, memo, useMemo, useRef, useEffect } from 'react'
 import '../styles/ChatScreen.css'
 import { Bar, Pie, Line, Doughnut, Scatter } from 'react-chartjs-2'
 import {
@@ -12,9 +12,10 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler,
+  Filler
 } from 'chart.js'
 import { marked } from 'marked'
+import '../styles/App.css'
 import ExportButton from './ExportButton'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, PointElement, LineElement, Title, Tooltip, Legend, Filler)
@@ -434,7 +435,7 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
       flexDirection: 'column', 
       height: '100vh',
       position: 'relative',
-      paddingTop: '64px' // Account for top navigation
+      paddingTop: '80px' // Account for fixed menu bar
     }}>
       <div 
         ref={contentAreaRef}

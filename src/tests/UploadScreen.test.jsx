@@ -4,7 +4,7 @@ import UploadScreen from '../components/UploadScreen.jsx'
 
 describe('UploadScreen', () => {
   const baseProps = {
-    selectedFile: null,
+    selectedFiles: [],
     onFileChange: vi.fn(),
     query: '',
     onQueryChange: vi.fn(),
@@ -15,7 +15,7 @@ describe('UploadScreen', () => {
 
   it('renders file upload area and query box', () => {
     render(<UploadScreen {...baseProps} />)
-    expect(screen.getByText(/Drag & drop a file here/i)).toBeInTheDocument()
+    expect(screen.getByText(/Drag & drop file\(s\) here/i)).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/Enter your query here/i)).toBeInTheDocument()
   })
 
@@ -25,13 +25,12 @@ describe('UploadScreen', () => {
   })
 
   it('enables submit button if file and query are present', () => {
-    render(<UploadScreen {...baseProps} selectedFile={{ name: 'test.csv' }} query="test query" />)
+    render(<UploadScreen {...baseProps} selectedFiles={[{ name: 'test.csv' }]} query="test query" />)
     expect(screen.getByRole('button', { name: /submit query/i })).not.toBeDisabled()
   })
 
   it('shows selected file name if file is present', () => {
-    render(<UploadScreen {...baseProps} selectedFile={{ name: 'test.csv' }} />)
-    expect(screen.getByText(/Selected file:/i)).toBeInTheDocument()
+    render(<UploadScreen {...baseProps} selectedFiles={[{ name: 'test.csv' }]} />)
     expect(screen.getByText(/test.csv/i)).toBeInTheDocument()
   })
 

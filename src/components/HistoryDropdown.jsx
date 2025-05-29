@@ -9,7 +9,7 @@ function HistoryDropdown({ history, onSelect }) {
         onClick={() => setOpen((o) => !o)}
         style={{ marginLeft: 8 }}
       >
-        History
+        📋 History
       </button>
       {open && (
         <div className="history-dropdown-list" style={{ position: 'absolute', right: 0, top: '110%', background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.12)', borderRadius: 8, minWidth: 220, zIndex: 300 }}>
