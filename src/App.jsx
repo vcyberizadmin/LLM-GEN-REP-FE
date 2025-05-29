@@ -4,7 +4,6 @@ import ChatScreen from './components/ChatScreen.jsx'
 import SessionHistory from './components/SessionHistory.jsx'
 import { useState, useEffect } from 'react'
 import HistoryDropdown from './components/HistoryDropdown.jsx'
-import vcyberizLogo from './assets/vcyberiz-logo.png'
 import { useNavigate } from 'react-router-dom'
 
 function App() {
@@ -421,7 +420,7 @@ function App() {
         <div className="menu-center-section">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <img 
-              src={vcyberizLogo} 
+              src="/vcyberiz-logo.png" 
               alt="vcyberiz Logo" 
               className="menu-screenshot"
               style={{
