@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { AUTH_CONFIG, isSessionExpired, setLoginTime, clearAuthData } from '../config/auth'
-import vcyberizLogo from '../assets/vcyberiz-logo.png'
 
 const PasswordProtect = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -258,7 +257,7 @@ const PasswordProtect = ({ children }) => {
             alignItems: 'center'
           }}>
             <img 
-              src={vcyberizLogo} 
+              src="/vcyberiz-logo.png" 
               alt="vCyberiz Logo" 
               style={{
                 height: isMobile ? '60px' : '80px',
