@@ -437,7 +437,10 @@ function App() {
               </div>
             )}
           </div>
-          <button className="menu-new-chat-btn">
+          <button 
+            className="menu-new-chat-btn"
+            onClick={handleNewChat}
+          >
             + New
           </button>
         </div>

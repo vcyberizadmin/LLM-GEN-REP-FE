@@ -210,18 +210,20 @@ body, html {
 }
 
 .menu-new-chat-btn {
-  color: #3b82f6;
-  border-color: #3b82f6;
-}
-
-.menu-history-btn:hover {
-  border-color: #9ca3af;
-  background: #f9fafb;
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  border-radius: 0;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .menu-new-chat-btn:hover {
-  background: #f0f9ff;
-  border-color: #2563eb;
+  background: #f8fafc;
+  border-color: #cbd5e1;
 }
 
 .menu-screenshot {
@@ -308,7 +310,7 @@ body, html {
   background: white;
   border: 1px solid #e2e8f0;
   color: #1e293b;
-  border-radius: 12px;
+  border-radius: 0;
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
   font-weight: 500;
