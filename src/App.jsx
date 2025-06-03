@@ -22,6 +22,7 @@ function App() {
   const [showSessionHistory, setShowSessionHistory] = useState(false)
   const [sessionId, setSessionId] = useState(null)
   const [sessionRestored, setSessionRestored] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
 
   // Set consistent white background theme
   useEffect(() => {
@@ -387,55 +388,56 @@ function App() {
       {/* Fixed Menu Bar */}
       <div className="menu-bar">
         <div className="menu-left-section">
-          <button
-            onClick={handleLogout}
-            style={{
-              background: '#fff',
-              color: '#000',
-              border: 'none',
-              borderRadius: '0.5rem',
-              padding: '0.5rem 1rem',
-              fontSize: '0.875rem',
-              fontWeight: '500',
-              cursor: 'pointer',
-              transition: '0.2s',
-              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = 'translateY(-1px)'
-              e.target.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.15)'
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'translateY(0px)'
-              e.target.style.boxShadow = '0px 2px 4px rgba(0, 0, 0, 0.1)'
-            }}
-          >
-            🔓 Logout
-          </button>
+          {/* Timestamp */}
+          <span className="timestamp">
+            {new Date().toLocaleString('en-GB', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false
+            }).replace(',', '')}
+          </span>
         </div>
         
         <div className="menu-center-section">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img 
-              src="/vcyberiz-logo.png" 
-              alt="vcyberiz Logo" 
-              className="menu-screenshot"
-              style={{
-                height: '40px',
-                width: 'auto',
-                borderRadius: '4px',
-                objectFit: 'contain'
-              }}
-            />
-          </div>
+          <h1 className="app-title">REPORTMAKER</h1>
         </div>
         
         <div className="menu-bar-actions">
-          <HistoryDropdown history={history} onSelect={handleHistorySelect} />
-          <button
+          <div className="history-dropdown">
+            <button 
+              className="menu-history-btn"
+              onClick={() => setShowHistory(!showHistory)}
+            >
+              History
+            </button>
+            {showHistory && (
+              <div className="history-dropdown-list">
+                {history.map((item) => (
+                  <div 
+                    key={item.id} 
+                    className="history-dropdown-item"
+                    onClick={() => handleHistorySelect(item.id)}
+                  >
+                    <div className="history-item-content">
+                      <span className="history-item-text">{item.query}</span>
+                      <span className="history-item-time">
+                        {new Date(item.timestamp).toLocaleTimeString('en-GB', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: false
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <button 
             className="menu-new-chat-btn"
             onClick={handleNewChat}
           >
@@ -481,16 +483,33 @@ function App() {
       )}
       
       {!submitted && (
-        <UploadScreen
-          selectedFiles={selectedFiles}
-          onFileChange={handleUpload}
-          query={query}
-          onQueryChange={handleQueryChange}
-          onSubmit={handleSubmit}
-          submitting={submitting}
-          error={error}
-          minimalUpload
-        />
+        <div className="main-content">
+          <div className="content-left">
+            <div className="content-section">
+              <h2 className="section-title">CSV and Report time</h2>
+              <div className="search-wrapper">
+                <span className="search-icon">🔍</span>
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="How can I help you"
+                  value={query}
+                  onChange={(e) => handleQueryChange(e.target.value)}
+                />
+                <button 
+                  className="search-submit"
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                >
+                  →
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="content-right">
+            <img src="/rad-image.png" alt="Workflow Diagram" className="workflow-image" />
+          </div>
+        </div>
       )}
       
       {submitted && (
