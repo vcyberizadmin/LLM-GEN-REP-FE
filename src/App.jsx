@@ -388,22 +388,22 @@ function App() {
       {/* Fixed Menu Bar */}
       <div className="menu-bar">
         <div className="menu-left-section">
-          {/* Timestamp */}
-          <span className="timestamp">
-            {new Date().toLocaleString('en-GB', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-              hour12: false
-            }).replace(',', '')}
-          </span>
+          {/* Logout Button */}
+          <button 
+            className="logout-button"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
         </div>
         
         <div className="menu-center-section">
-          <h1 className="app-title">REPORTMAKER</h1>
+          {/* VCB Logo */}
+          <img 
+            src="/vcyberiz-logo.png" 
+            alt="vCyberiz Logo" 
+            className="vcb-logo"
+          />
         </div>
         
         <div className="menu-bar-actions">
@@ -488,7 +488,6 @@ function App() {
             <div className="content-section">
               <h2 className="section-title">CSV and Report time</h2>
               <div className="search-wrapper">
-                <span className="search-icon">🔍</span>
                 <input
                   type="text"
                   className="search-input"
@@ -496,6 +495,9 @@ function App() {
                   value={query}
                   onChange={(e) => handleQueryChange(e.target.value)}
                 />
+                <button className="attachment-button">
+                  📎
+                </button>
                 <button 
                   className="search-submit"
                   onClick={handleSubmit}
