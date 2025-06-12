@@ -4,13 +4,13 @@ This React/Vite front-end communicates with a FastAPI back-end that performs lar
 
 ## Live Back-End URL
 
-The application is now configured to talk to the production back-end hosted on Vercel:
+The application **defaults** to the production back-end hosted on Vercel:
 
 ```
 https://llm-gen-rep-be.vercel.app
 ```
 
-All API calls (e.g. `POST /analyze`, `GET /session/:id`, `GET /sessions`, `POST /export/...`) are prefixed with this URL.  During local development you may still point the front-end at a locally running API (usually `http://localhost:8000`) by searching for the base URL in the code or injecting an environment variable (see below).
+All API calls (e.g. `POST /analyze`, `GET /session/:id`, `GET /sessions`, `POST /export/...`) are prefixed with this URL.  During local development you **may** override this by pointing to a locally running API (e.g. `http://localhost:8000`) via an environment variable or editing the source.
 
 ## Quick Start (Development)
 
