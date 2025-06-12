@@ -38,7 +38,7 @@ function App() {
       const storedSessionId = localStorage.getItem('currentSessionId')
       if (storedSessionId) {
         try {
-          const response = await fetch(`http://localhost:8000/session/${storedSessionId}`)
+          const response = await fetch(`https://llm-gen-rep-be.vercel.app/session/${storedSessionId}`)
           if (response.ok) {
             const sessionData = await response.json()
             setSessionId(storedSessionId)
@@ -136,7 +136,7 @@ function App() {
         })
       }
       formData.append('chat_history', JSON.stringify(chatHistory))
-      const res = await fetch('http://localhost:8000/analyze', {
+      const res = await fetch('https://llm-gen-rep-be.vercel.app/analyze', {
         method: 'POST',
         body: formData,
       })
@@ -238,7 +238,7 @@ function App() {
         formData.append('session_id', sessionId)
       }
       
-      const res = await fetch('http://localhost:8000/analyze', {
+      const res = await fetch('https://llm-gen-rep-be.vercel.app/analyze', {
         method: 'POST',
         body: formData,
       })
@@ -295,7 +295,7 @@ function App() {
     
     // If not found in localStorage, try to load as session ID from backend
     try {
-      const response = await fetch(`http://localhost:8000/session/${id}`)
+      const response = await fetch(`https://llm-gen-rep-be.vercel.app/session/${id}`)
       if (response.ok) {
         const sessionData = await response.json()
         setSessionId(id)
