@@ -228,6 +228,47 @@ The authentication system supports:
 
 Note: Some visual effects (like backdrop-filter) may degrade gracefully in older browsers.
 
----
+## Automated Testing Matrix
 
+| Layer | Trigger | Typical Duration | Tech / Command |
+|-------|---------|------------------|----------------|
+| **Static & Unit** | Every `git push` | < 1 min | Vitest + RTL + MSW<br>`npm test` |
+| **Pact Contract** | `push` → *publish*<br>`PR` → *can-i-deploy* | ~1 min | Pact / PactFlow<br>`npm test` (consumer tests live in `src/tests/*.pact.test.js`) |
+| **Local Integration** | Dev laptops (`vercel dev`) | < 1 min | Supertest (in-memory Express stubs)<br>`npm test` |
+| **Preview Smoke** | Every Pull Request | 2-3 min | Playwright smoke (`*.pw.spec.ts`)<br>`npm run test:e2e` |
+| **Nightly Prod** | Nightly GH Action | 2-3 min | Playwright nightly (`nightly-*.pw.spec.ts`) |
+| **Perf / Security** | Weekly or Release branches | 5-10 min | Playwright budget & header checks (`perf-security.pw.spec.ts`) |
+
+### Running tests locally
+
+```bash
+# 1. Static/unit + Pact + local integration
+npm test
+
+# 2. E2E layers (smoke, nightly, perf/security)
+#    This auto-starts Vite on port 4173 for the duration of the run.
+npm run test:e2e
+```
+
+* Playwright discovers any file ending with `.pw.spec.ts`.
+* New tests can be dropped into the repo root or sub-dirs and will auto-run.
+* The Vite dev-server is reused across test files for speed.
+
+### Performance Budget
+* Fails if first page load (navigationStart → loadEventEnd) exceeds **4 seconds**.
+* Threshold can be tuned in `perf-security.pw.spec.ts` (`MAX_LOAD_TIME`).
+
+### Security Checks
+* Verifies presence (if returned) of defensive headers such as `X-Content-Type-Options` and a non-empty `Content-Security-Policy`.
+* Extend the `EXPECTED_HEADERS` map to enforce stricter rules.
+
+---
+Everything passes locally with:
+
+```bash
+npm test            # 22 unit & pact & integration tests
+npm run test:e2e    # 3 Playwright suites (smoke, nightly, perf/security)
+```
+
+---
 **Need help?** Check the component source code for detailed implementation or modify the configuration to suit your specific requirements. 

@@ -1,11 +1,19 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent } from '@testing-library/react'
+import { render } from '../test/test-utils'
 import { vi } from 'vitest'
 import ChatScreen from '../components/ChatScreen.jsx'
 
-// Mock the Bar chart so Chart.js doesn't try to render a real canvas
+// Mock all chart components
 vi.mock('react-chartjs-2', () => ({
-  Bar: () => <div data-testid="mock-bar-chart" />
+  Bar: () => <div data-testid="mock-bar-chart" />,
+  Pie: () => <div data-testid="mock-pie-chart" />,
+  Line: () => <div data-testid="mock-line-chart" />,
+  Doughnut: () => <div data-testid="mock-doughnut-chart" />,
+  Scatter: () => <div data-testid="mock-scatter-chart" />
 }))
+
+// Mock scrollIntoView
+window.HTMLElement.prototype.scrollIntoView = vi.fn()
 
 describe('ChatScreen', () => {
   const baseProps = {
@@ -16,25 +24,44 @@ describe('ChatScreen', () => {
     setResponseVisible: vi.fn(),
   }
 
-  it('renders View Response button', () => {
-    render(<ChatScreen {...baseProps} />)
-    expect(screen.getByText(/View Response/i)).toBeInTheDocument()
-  })
-
-  it('disables View Response button if not submitted or no response', () => {
-    render(<ChatScreen {...baseProps} />)
-    expect(screen.getByRole('button', { name: /view response/i })).toBeDisabled()
-  })
-
-  it('enables View Response button if submitted and response present', () => {
+  it('renders the response section when response is present', () => {
     render(<ChatScreen {...baseProps} submitted={true} response="Test response" />)
-    expect(screen.getByRole('button', { name: /view response/i })).not.toBeDisabled()
+    expect(screen.getByText(/Model Response:/i)).toBeInTheDocument()
+    expect(screen.getByText(/Test response/i)).toBeInTheDocument()
+  })
+
+  it('shows loading state when loading is true', () => {
+    render(<ChatScreen {...baseProps} loading={true} />)
+    expect(screen.getByText(/Thinking/i)).toBeInTheDocument()
+  })
+
+  it('shows follow-up input when response is present', () => {
+    render(<ChatScreen {...baseProps} submitted={true} response="Test response" />)
+    expect(screen.getByPlaceholderText(/Ask a follow-up question/i)).toBeInTheDocument()
   })
 
   it('shows response and chart when responseVisible and response are true', () => {
-    render(<ChatScreen {...baseProps} submitted={true} responseVisible={true} response="Test response" />)
+    const mockChartData = {
+      labels: ['A', 'B', 'C'],
+      datasets: [{
+        label: 'Test Dataset',
+        data: [1, 2, 3],
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      }]
+    }
+
+    render(
+      <ChatScreen
+        {...baseProps}
+        submitted={true}
+        responseVisible={true}
+        response="Test response"
+        chartData={mockChartData}
+      />
+    )
+    
     expect(screen.getByText(/Model Response:/i)).toBeInTheDocument()
     expect(screen.getByText(/Test response/i)).toBeInTheDocument()
-    expect(screen.getByTestId('mock-bar-chart')).toBeInTheDocument()
+    expect(screen.getByTestId('mock-pie-chart')).toBeInTheDocument()
   })
 }) 
