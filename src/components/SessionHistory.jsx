@@ -15,7 +15,7 @@ const SessionHistory = ({ isDarkMode = false, onClose, onSessionSelect }) => {
   const fetchSessions = async () => {
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:8000/sessions')
+      const response = await fetch('https://llm-gen-rep-be.vercel.app/sessions')
       if (!response.ok) throw new Error('Failed to fetch sessions')
       
       const data = await response.json()
@@ -31,7 +31,7 @@ const SessionHistory = ({ isDarkMode = false, onClose, onSessionSelect }) => {
   const fetchSessionData = async (sessionId) => {
     setLoading(true)
     try {
-      const response = await fetch(`http://localhost:8000/session/${sessionId}`)
+      const response = await fetch(`https://llm-gen-rep-be.vercel.app/session/${sessionId}`)
       if (!response.ok) throw new Error('Failed to fetch session data')
       
       const data = await response.json()
@@ -47,7 +47,7 @@ const SessionHistory = ({ isDarkMode = false, onClose, onSessionSelect }) => {
 
   const exportSessionDashboard = async (sessionId) => {
     try {
-      const response = await fetch(`http://localhost:8000/export/session/${sessionId}/dashboard`, {
+      const response = await fetch(`https://llm-gen-rep-be.vercel.app/export/session/${sessionId}/dashboard`, {
         method: 'POST'
       })
       
