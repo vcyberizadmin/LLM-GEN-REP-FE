@@ -112,7 +112,7 @@ const ExportButton = ({ chartData, title = "", onExport, isDarkMode = false }) =
     setIsDropdownOpen(false)
     
     try {
-      const response = await fetch(`https://llm-gen-rep-be.vercel.app/export/data`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/export/data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

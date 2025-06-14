@@ -221,7 +221,6 @@ const PasswordProtect = ({ children }) => {
 
   // If authenticated but no children (login route), redirect to dashboard
   if (isAuthenticated && !children) {
-    navigate('/dashboard', { replace: true })
     return null
   }
 
