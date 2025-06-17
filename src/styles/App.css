@@ -210,7 +210,8 @@ body, html {
 }
 
 .menu-history-btn,
-.menu-new-chat-btn {
+.menu-new-chat-btn,
+.menu-logout-btn {
   background: #fff;
   border: 1px solid #d1d5db;
   border-radius: 8px;
@@ -238,6 +239,11 @@ body, html {
 }
 
 .menu-new-chat-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.menu-logout-btn:hover {
   background: #f8fafc;
   border-color: #cbd5e1;
 }

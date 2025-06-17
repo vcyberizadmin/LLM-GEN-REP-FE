@@ -112,7 +112,7 @@ const ExportButton = ({ chartData, title = "", onExport, isDarkMode = false }) =
     setIsDropdownOpen(false)
     
     try {
-      const response = await fetch(`http://localhost:8000/export/data`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/export/data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

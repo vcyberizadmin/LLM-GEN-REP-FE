@@ -77,7 +77,7 @@ function LoadingDots() {
 }
 
 function ChatScreen({ submitted, response, chartData, responseVisible, setResponseVisible, onBack, onFollowup, onNewChat, chatHistory = [], loading, csvColumns = [], currentFiles = [], sessionId = null }) {
-  
+  console.log(chatHistory, "chat history");
   const [followup, setFollowup] = useState('')
   const [additionalFiles, setAdditionalFiles] = useState([])
   const [showFileUpload, setShowFileUpload] = useState(false)
@@ -631,8 +631,9 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
                     borderRadius: '1rem',
                     padding: '0.6rem 1rem',
                     fontWeight: 600,
-                    textAlign: 'left',
+                    textAlign: 'right',
                   }}>
+                    Hello
                     <span dangerouslySetInnerHTML={{ __html: marked.parse(response || '') }} />
                   </div>
                   
