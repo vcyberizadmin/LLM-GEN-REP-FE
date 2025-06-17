@@ -38,7 +38,7 @@ function App() {
       const storedSessionId = localStorage.getItem('currentSessionId')
       if (storedSessionId) {
         try {
-          const response = await fetch(`https://llm-gen-rep-be.vercel.app/session/${storedSessionId}`)
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/session/${storedSessionId}`)
           if (response.ok) {
             const sessionData = await response.json()
             setSessionId(storedSessionId)
@@ -130,13 +130,15 @@ function App() {
     try {
       const formData = new FormData()
       formData.append('query', query)
+      console.log(query, "hello");
+      console.log(import.meta.env.VITE_API_BASE_URL, "hello");
       if (selectedFiles.length > 0) {
         selectedFiles.forEach((file) => {
           formData.append('files', file)
         })
       }
       formData.append('chat_history', JSON.stringify(chatHistory))
-      const res = await fetch('https://llm-gen-rep-be.vercel.app/analyze', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/analyze`, {
         method: 'POST',
         body: formData,
       })
@@ -238,7 +240,7 @@ function App() {
         formData.append('session_id', sessionId)
       }
       
-      const res = await fetch('https://llm-gen-rep-be.vercel.app/analyze', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/analyze`, {
         method: 'POST',
         body: formData,
       })
@@ -295,7 +297,7 @@ function App() {
     
     // If not found in localStorage, try to load as session ID from backend
     try {
-      const response = await fetch(`https://llm-gen-rep-be.vercel.app/session/${id}`)
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/session/${id}`)
       if (response.ok) {
         const sessionData = await response.json()
         setSessionId(id)
@@ -382,6 +384,13 @@ function App() {
     // Navigate to login page
     navigate('/login', { replace: true })
   }
+
+  const handleAttachment = (file) => {
+    console.log(file)
+    setSelectedFiles((prevFiles) => [...prevFiles, file])
+  }
+
+  console.log(history, "history");
 
   return (
     <>
@@ -495,9 +504,19 @@ function App() {
                   value={query}
                   onChange={(e) => handleQueryChange(e.target.value)}
                 />
-                <button className="attachment-button">
+                <label className="attachment-button" htmlFor="attachment-input" style={{ marginBottom: 0 }}>
                   📎
-                </button>
+                  <input
+                    id="attachment-input"
+                    type="file"
+                    style={{ display: 'none' }}
+                    onChange={e => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        handleAttachment(e.target.files[0])
+                      }
+                    }}
+                  />
+                </label>
                 <button 
                   className="search-submit"
                   onClick={handleSubmit}
