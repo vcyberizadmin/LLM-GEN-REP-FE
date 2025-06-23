@@ -437,7 +437,7 @@ const PasswordProtect = ({ children }) => {
                 Authenticating...
               </span>
             ) : (
-              '🚀 Access Dashboard'
+              'Access Dashboard'
             )}
           </button>
         </form>
