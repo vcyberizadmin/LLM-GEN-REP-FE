@@ -495,7 +495,7 @@ function App() {
         <div className="main-content">
           <div className="content-left">
             <div className="content-section">
-              <h2 className="section-title">CSV and Report time</h2>
+              <h2 className="section-title">Risk Report</h2>
               <div className="search-wrapper">
                 <input
                   type="text"
