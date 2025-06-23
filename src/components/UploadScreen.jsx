@@ -86,7 +86,7 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
             fontWeight: '600'
           }}
         >
-          CSV and Report time?
+          Risk Report
         </div>
         <form onSubmit={handleFormSubmit} className="modern-upload-form">
           <div
