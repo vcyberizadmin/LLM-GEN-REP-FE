@@ -34,7 +34,7 @@ open http://localhost:5173
 If you need to switch between environments without editing source files, you can create a local **`.env`** file and define:
 
 ```
-VITE_API_BASE="http://localhost:8000"
+VITE_API_BASE_URL="http://localhost:8000"
 ```
 
 Vite will expose this as `import.meta.env.VITE_API_BASE`, which you can reference in the code (a small refactor may be required if not already abstracted).
