@@ -66,4 +66,18 @@ describe('ChatScreen', () => {
     const showBtn = screen.getByRole('button', { name: /show visualization/i })
     fireEvent.click(showBtn)
   })
+
+   it('sanitizes markdown output by stripping script tags', () => {
+    const malicious = 'Hello <script id="bad">alert(1)</script>'
+    render(
+      <ChatScreen
+        {...baseProps}
+        submitted={true}
+        response={malicious}
+      />
+    )
+
+    expect(screen.getByText('Hello')).toBeInTheDocument()
+    expect(document.querySelector('#bad')).toBeNull()
+  })
 }) 
