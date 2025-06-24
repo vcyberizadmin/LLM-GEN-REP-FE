@@ -729,7 +729,6 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
                           <StaticChart data={chartData} />
                         </div>
                       </div>
-                      </div>
                       <div style={{ textAlign: 'right', marginTop: '0.5rem' }}>
                         <button
                           type="button"
