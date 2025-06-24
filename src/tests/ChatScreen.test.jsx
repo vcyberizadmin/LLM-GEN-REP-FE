@@ -40,7 +40,7 @@ describe('ChatScreen', () => {
     expect(screen.getByPlaceholderText(/Ask a follow-up question/i)).toBeInTheDocument()
   })
 
-  it('shows response and chart when responseVisible and response are true', () => {
+  it('shows response and chart only when visualization is requested', () => {
     const mockChartData = {
       labels: ['A', 'B', 'C'],
       datasets: [{
@@ -62,6 +62,8 @@ describe('ChatScreen', () => {
     
     expect(screen.getByText(/Model Response:/i)).toBeInTheDocument()
     expect(screen.getByText(/Test response/i)).toBeInTheDocument()
-    expect(screen.getByTestId('mock-pie-chart')).toBeInTheDocument()
+    expect(screen.queryByTestId('mock-pie-chart')).not.toBeInTheDocument()
+    const showBtn = screen.getByRole('button', { name: /show visualization/i })
+    fireEvent.click(showBtn)
   })
 }) 
