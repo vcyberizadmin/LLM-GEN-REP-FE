@@ -15,6 +15,7 @@ import {
   Filler
 } from 'chart.js'
 import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 import '../styles/App.css'
 import ExportButton from './ExportButton'
 import { generateColorPalette } from '../lib/colors.js'
@@ -550,7 +551,9 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
                       fontWeight: 600,
                       textAlign: 'left',
                     }}>
-                      <span dangerouslySetInnerHTML={{ __html: marked.parse(item.response || '') }} />
+                    <span dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(item.response || ''))
+                        }}
+                      />
                     </div>
                     
                     {/* Show chart for this specific message if it has chart data */}
