@@ -83,6 +83,7 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
   const [additionalFiles, setAdditionalFiles] = useState([])
   const [showFileUpload, setShowFileUpload] = useState(false)
   const [showScrollToBottom, setShowScrollToBottom] = useState(false)
+  const [visibleCharts, setVisibleCharts] = useState({})
   const isDarkMode = typeof window !== 'undefined' && document.body.classList.contains('dark-mode')
 
   // Refs for scroll management
@@ -130,6 +131,14 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
   const removeFile = (index) => {
     setAdditionalFiles(prev => prev.filter((_, i) => i !== index))
   }
+
+  const toggleChartVisibility = (index) => {
+    setVisibleCharts(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }))
+  }
+
 
   // Memoized prompt suggestions based on csvColumns
   const promptSuggestions = useMemo(() => {
@@ -546,21 +555,22 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
                     
                     {/* Show chart for this specific message if it has chart data */}
                     {item.chartData && (
-                      <div style={{
-                        width: '100%',
-                        maxWidth: '600px',
-                        marginTop: '0.5rem',
-                        padding: '1rem',
-                        background: isDarkMode ? '#2a2a2a' : '#f8f9fa',
-                        borderRadius: '0.75rem',
-                        border: isDarkMode ? '1px solid #444' : '1px solid #e9ecef'
-                      }}>
-                        <div style={{ 
-                          display: 'flex', 
-                          justifyContent: 'space-between', 
-                          alignItems: 'center', 
-                          marginBottom: '1rem'
+                      visibleCharts[idx] ? (
+                        <div style={{
+                          width: '100%',
+                          maxWidth: '600px',
+                          marginTop: '0.5rem',
+                          padding: '1rem',
+                          background: isDarkMode ? '#2a2a2a' : '#f8f9fa',
+                          borderRadius: '0.75rem',
+                          border: isDarkMode ? '1px solid #444' : '1px solid #e9ecef'
                         }}>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '1rem'
+                          }}>
                           <h4 style={{ 
                             margin: 0, 
                             color: isDarkMode ? '#f2f2f2' : '#111',
@@ -597,7 +607,37 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
                             <StaticChart data={item.chartData} />
                           </div>
                         </div>
+                         <div style={{ textAlign: 'right', marginTop: '0.5rem' }}>
+                          <button
+                            type="button"
+                            onClick={() => toggleChartVisibility(idx)}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: isDarkMode ? '#a6e1fa' : '#1a237e',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            Hide Visualization
+                          </button>
+                        </div> 
                       </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => toggleChartVisibility(idx)}
+                          style={{
+                            marginTop: '0.5rem',
+                            background: 'transparent',
+                            border: 'none',
+                            color: isDarkMode ? '#a6e1fa' : '#1a237e',
+                            cursor: 'pointer',
+                            textDecoration: 'underline'
+                          }}
+                        >
+                          Show Visualization
+                        </button>
+                      )  
                     )}
                   </div>
                 </div>
@@ -634,19 +674,20 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
                   
                   {/* Show chart for current response if available */}
                   {chartData && !loading && (
-                    <div style={{
-                      width: '100%',
-                      maxWidth: '600px',
-                      marginTop: '0.5rem',
-                      padding: '1rem',
-                      background: isDarkMode ? '#2a2a2a' : '#f8f9fa',
-                      borderRadius: '0.75rem',
-                      border: isDarkMode ? '1px solid #444' : '1px solid #e9ecef'
-                    }}>
-                      <div style={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
-                        alignItems: 'center', 
+                    visibleCharts['current'] ? (
+                      <div style={{
+                        width: '100%',
+                        maxWidth: '600px',
+                        marginTop: '0.5rem',
+                        padding: '1rem',
+                        background: isDarkMode ? '#2a2a2a' : '#f8f9fa',
+                        borderRadius: '0.75rem',
+                        border: isDarkMode ? '1px solid #444' : '1px solid #e9ecef'
+                      }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                         marginBottom: '1rem'
                       }}>
                         <h4 style={{ 
@@ -670,22 +711,53 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
                           }}
                         />
                       </div>
-                                             <div 
-                         className="chart-container"
-                         style={{ 
-                           height: '250px',
-                           width: '100%',
-                           display: 'flex',
-                           alignItems: 'center',
-                           justifyContent: 'center',
-                           position: 'relative'
-                         }}
-                       >
-                         <div style={{ width: '100%', height: '100%' }}>
-                           <StaticChart data={chartData} />
-                         </div>
-                       </div>
+                      <div
+                        className="chart-container"
+                        style={{
+                          height: '250px',
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          position: 'relative'
+                        }}
+                      >
+                        <div style={{ width: '100%', height: '100%' }}>
+                          <StaticChart data={chartData} />
+                        </div>
+                      </div>
+                      </div>
+                      <div style={{ textAlign: 'right', marginTop: '0.5rem' }}>
+                        <button
+                          type="button"
+                          onClick={() => toggleChartVisibility('current')}
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: isDarkMode ? '#a6e1fa' : '#1a237e',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Hide Visualization
+                        </button>
+                      </div>
                     </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => toggleChartVisibility('current')}
+                        style={{
+                          marginTop: '0.5rem',
+                          background: 'transparent',
+                          border: 'none',
+                          color: isDarkMode ? '#a6e1fa' : '#1a237e',
+                          cursor: 'pointer',
+                          textDecoration: 'underline'
+                        }}
+                      >
+                        Show Visualization
+                      </button>
+                    )
                   )}
                 </div>
               </>
