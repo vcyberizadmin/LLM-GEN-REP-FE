@@ -17,6 +17,7 @@ import {
 import { marked } from 'marked'
 import '../styles/App.css'
 import ExportButton from './ExportButton'
+import { generateColorPalette } from '../lib/colors.js'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
@@ -234,9 +235,7 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
         datasets: [{
           label: backendData.label || 'Data',
           data: backendData.data,
-          backgroundColor: backendData.backgroundColor || [
-            '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40'
-          ],
+          backgroundColor: backendData.backgroundColor || generateColorPalette(backendData.data.length),
           borderColor: backendData.borderColor || '#fff',
           borderWidth: backendData.borderWidth || 1
         }]
@@ -256,8 +255,8 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
         datasets: [{
           label: backendData.name || 'Data',
           data: backendData.y,
-          backgroundColor: backendData.backgroundColor || '#36a2eb',
-          borderColor: backendData.borderColor || '#36a2eb',
+          backgroundColor: backendData.backgroundColor || generateColorPalette(1)[0],
+          borderColor: backendData.borderColor || generateColorPalette(1)[0],
           borderWidth: 2,
           fill: false
         }]
@@ -275,9 +274,7 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
         datasets: [{
           label: backendData.label || backendData.title || 'Data',
           data: values,
-          backgroundColor: [
-            '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40'
-          ]
+          backgroundColor: generateColorPalette(values.length)
         }]
       }
     }
@@ -297,9 +294,7 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
           datasets: [{
             label: valueKey,
             data: backendData.map(item => item[valueKey]),
-            backgroundColor: [
-              '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40'
-            ]
+            backgroundColor: generateColorPalette(values.length)
           }]
         }
       }
