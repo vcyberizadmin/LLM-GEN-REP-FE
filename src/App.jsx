@@ -130,8 +130,6 @@ function App() {
     try {
       const formData = new FormData()
       formData.append('query', query)
-      console.log(query, "hello");
-      console.log(import.meta.env.VITE_API_BASE_URL, "hello");
       if (selectedFiles.length > 0) {
         selectedFiles.forEach((file) => {
           formData.append('files', file)
