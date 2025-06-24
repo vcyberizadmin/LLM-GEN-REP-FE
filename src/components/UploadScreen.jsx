@@ -220,16 +220,7 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
           onChange={handleFileChange}
           multiple
         />
-        {selectedFiles.length > 0 ? (
-          <div className="selected-files-container" style={{ marginTop: 10, width: '100%' }}>
-            {selectedFiles.map((file, idx) => (
-              <div key={idx} className="selected-file-label" style={{ display: 'inline-block', marginRight: 8, position: 'relative', background: isDarkMode ? '#181818' : '#f2f2f2', color: isDarkMode ? '#bbb' : '#232323', borderRadius: 4, padding: '2px 8px', fontSize: 13 }}>
-                {file.name}
-                <button type="button" aria-label="Remove file" style={{ marginLeft: 6, background: 'none', border: 'none', color: '#a36a4f', cursor: 'pointer', fontWeight: 'bold', fontSize: 15, position: 'relative', top: 1 }} onClick={e => { e.stopPropagation(); handleRemoveFile(idx) }}>×</button>
-              </div>
-            ))}
-          </div>
-        ) : (
+        {selectedFiles.length === 0 && (
           <div className="file-upload-placeholder">
             Drag & drop file(s) here, or <span className="upload-link">browse</span>
           </div>
@@ -244,6 +235,16 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
           rows={4}
           style={{ marginBottom: '1rem', background: isDarkMode ? '#232323' : '#fff', color: isDarkMode ? '#f2f2f2' : '#111', border: isDarkMode ? '1px solid #444' : '1px solid #bbb' }}
         />
+        {selectedFiles.length > 0 && (
+          <div className="selected-files-container" style={{ marginTop: 10 }}>
+            {selectedFiles.map((file, idx) => (
+              <div key={idx} className="selected-file-label">
+                {file.name}
+                <button type="button" onClick={() => handleRemoveFile(idx)}>×</button>
+              </div>
+            ))}
+          </div>
+        )}
         <button
           type="submit"
           className="submit-btn custom-element"
