@@ -24,6 +24,21 @@ function App() {
   const [sessionRestored, setSessionRestored] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
 
+  const getUploadType = (files) => {
+    let hasZip = false
+    let hasTabular = false
+    files.forEach(f => {
+      const name = f.name.toLowerCase()
+      if (name.endsWith('.zip')) hasZip = true
+      if (name.endsWith('.csv') || name.endsWith('.xls') || name.endsWith('.xlsx')) {
+        hasTabular = true
+      }
+    })
+    if (hasZip && hasTabular) return 'mixed'
+    if (hasZip) return 'zip'
+    return 'tabular'
+  }
+
   // Set consistent white background theme
   useEffect(() => {
     document.body.classList.remove('dark-mode')
@@ -135,8 +150,9 @@ function App() {
           formData.append('files', file)
         })
       }
+      formData.append('upload_type', getUploadType(selectedFiles))
       formData.append('chat_history', JSON.stringify(chatHistory))
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/analyze`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/process`, {
         method: 'POST',
         body: formData,
       })
@@ -231,6 +247,8 @@ function App() {
         formData.append('files', emptyFile)
       }
       
+      const allFiles = [...selectedFiles, ...additionalFiles]
+      formData.append('upload_type', getUploadType(allFiles))
       formData.append('chat_history', JSON.stringify(chatHistory))
       
       // Include session ID if available
@@ -238,7 +256,7 @@ function App() {
         formData.append('session_id', sessionId)
       }
       
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/analyze`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/process`, {
         method: 'POST',
         body: formData,
       })
