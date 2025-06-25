@@ -10,7 +10,7 @@ The application **defaults** to the production back-end hosted on Vercel:
 https://llm-gen-rep-be.vercel.app
 ```
 
-All API calls (e.g. `POST /analyze`, `GET /session/:id`, `GET /sessions`, `POST /export/...`) are prefixed with this URL.  During local development you **may** override this by pointing to a locally running API (e.g. `http://localhost:8000`) via an environment variable or editing the source.
+All API calls (e.g. `POST /process`, `GET /session/:id`, `GET /sessions`, `POST /visualize/zip`, `POST /export/...`) are prefixed with this URL. During local development you **may** override this by pointing to a locally running API (e.g. `http://localhost:8000`) via an environment variable or editing the source.
 
 ## Quick Start (Development)
 
@@ -38,6 +38,18 @@ VITE_API_BASE_URL="http://localhost:8000"
 ```
 
 Vite will expose this as `import.meta.env.VITE_API_BASE`, which you can reference in the code (a small refactor may be required if not already abstracted).
+
+## API Endpoints
+
+Key routes exposed by the back-end include:
+
+- `POST /process` - analyze uploaded files or ZIP bundles automatically.
+  Include an `upload_type` form field set to `zip`, `tabular`, or `mixed` so
+  the back-end can route the request appropriately.
+- `POST /visualize/zip` - generate slide decks from a ZIP upload.
+- `GET /session/:id` - retrieve a previous session.
+- `GET /sessions` - list recent sessions.
+- `POST /export/...` - export charts or dashboards.
 
 ## Production Build
 
