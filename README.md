@@ -47,6 +47,7 @@ Key routes exposed by the back-end include:
   Include an `upload_type` form field set to `zip`, `tabular`, or `mixed` so
   the back-end can route the request appropriately.
 - `POST /visualize/zip` - generate slide decks from a ZIP upload.
+- Uploads consisting entirely of ZIP files are automatically routed to this endpoint.
 - `GET /session/:id` - retrieve a previous session.
 - `GET /sessions` - list recent sessions.
 - `POST /export/...` - export charts or dashboards.

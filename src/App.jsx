@@ -6,6 +6,15 @@ import { useState, useEffect } from 'react'
 import HistoryDropdown from './components/HistoryDropdown.jsx'
 import { useNavigate } from 'react-router-dom'
 
+// Determine which API endpoint should be used based on the file list
+// If every file is a ZIP archive, the request goes to `/visualize/zip`
+// otherwise it defaults to the standard `/process` endpoint.
+export const getApiEndpoint = (files) => {
+  if (files.length > 0 && files.every(f => f.name.toLowerCase().endsWith('.zip')))
+    return '/visualize/zip'
+  return '/process'
+}
+
 function App() {
   const navigate = useNavigate()
   const [selectedFiles, setSelectedFiles] = useState([])
@@ -38,6 +47,7 @@ function App() {
     if (hasZip) return 'zip'
     return 'tabular'
   }
+
 
   // Set consistent white background theme
   useEffect(() => {
@@ -152,7 +162,8 @@ function App() {
       }
       formData.append('upload_type', getUploadType(selectedFiles))
       formData.append('chat_history', JSON.stringify(chatHistory))
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/process`, {
+      const endpoint = getApiEndpoint(selectedFiles)
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}${endpoint}`, {
         method: 'POST',
         body: formData,
       })
@@ -256,7 +267,8 @@ function App() {
         formData.append('session_id', sessionId)
       }
       
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/process`, {
+      const endpoint = getApiEndpoint(allFiles)
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}${endpoint}`, {
         method: 'POST',
         body: formData,
       })
