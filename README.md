@@ -51,6 +51,15 @@ Key routes exposed by the back-end include:
 - `GET /sessions` - list recent sessions.
 - `POST /export/...` - export charts or dashboards.
 
+### ZIP Upload Example
+
+1. Choose a `.zip` archive containing CSV or Excel files.
+2. Submit your initial query with the files attached. The front-end will send `upload_type=zip` to `/process`.
+3. After processing, click **Generate Slides** to send the same archive to `/visualize/zip`.
+4. Returned slide images will display inline.
+
+The backend currently accepts archives up to **20&nbsp;MB** in size.
+
 ## Production Build
 
 ```bash

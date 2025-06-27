@@ -78,7 +78,7 @@ function LoadingDots() {
   )
 }
 
-function ChatScreen({ submitted, response, chartData, responseVisible, setResponseVisible, onBack, onFollowup, onNewChat, chatHistory = [], loading, csvColumns = [], currentFiles = [], sessionId = null }) {
+function ChatScreen({ submitted, response, chartData, responseVisible, setResponseVisible, onBack, onFollowup, onZipVisualize, zipSlides = [], visualizing = false, chatHistory = [], loading, csvColumns = [], currentFiles = [], sessionId = null }) {
   console.log(chatHistory, "chat history");
   const [followup, setFollowup] = useState('')
   const [additionalFiles, setAdditionalFiles] = useState([])
@@ -1023,6 +1023,34 @@ function ChatScreen({ submitted, response, chartData, responseVisible, setRespon
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {onZipVisualize && currentFiles.some(f => f.name.toLowerCase().endsWith('.zip')) && (
+          <div style={{ margin: '1rem 0' }}>
+            <button
+              type="button"
+              onClick={onZipVisualize}
+              disabled={visualizing}
+              style={{
+                background: isDarkMode ? '#232323' : '#fff',
+                color: isDarkMode ? '#f2f2f2' : '#111',
+                border: isDarkMode ? '1px solid #444' : '1px solid #bbb',
+                padding: '0.5rem 1rem',
+                cursor: visualizing ? 'not-allowed' : 'pointer',
+                borderRadius: '0.25rem'
+              }}
+            >
+              {visualizing ? 'Visualizing...' : 'Generate Slides'}
+            </button>
+          </div>
+        )}
+
+        {zipSlides.length > 0 && (
+          <div style={{ margin: '1rem 0' }}>
+            {zipSlides.map((src, idx) => (
+              <img key={idx} src={src} alt={`slide-${idx + 1}`} style={{ maxWidth: '100%', marginBottom: '0.5rem' }} />
+            ))}
           </div>
         )}
 

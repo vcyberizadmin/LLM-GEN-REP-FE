@@ -2,9 +2,11 @@ import './styles/App.css'
 import UploadScreen from './components/UploadScreen.jsx'
 import ChatScreen from './components/ChatScreen.jsx'
 import SessionHistory from './components/SessionHistory.jsx'
+import ZipSlides from './components/ZipSlides.jsx'
 import { useState, useEffect } from 'react'
 import HistoryDropdown from './components/HistoryDropdown.jsx'
 import { useNavigate } from 'react-router-dom'
+import { visualizeZip } from './lib/api'
 
 function App() {
   const navigate = useNavigate()
@@ -23,6 +25,8 @@ function App() {
   const [sessionId, setSessionId] = useState(null)
   const [sessionRestored, setSessionRestored] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
+  const [zipSlides, setZipSlides] = useState([])
+  const [visualizing, setVisualizing] = useState(false)
 
   const getUploadType = (files) => {
     let hasZip = false
@@ -298,6 +302,21 @@ function App() {
     }
   }
 
+  const handleVisualizeZip = async () => {
+    const zipFile = selectedFiles.find(f => f.name.toLowerCase().endsWith('.zip'))
+    if (!zipFile) return
+    setVisualizing(true)
+    setError(null)
+    try {
+      const result = await visualizeZip(zipFile)
+      setZipSlides(result.slides || [])
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setVisualizing(false)
+    }
+  }
+
   const handleHistorySelect = async (id) => {
     // First try to find in localStorage history (backward compatibility)
     const item = history.find(h => h.id === id)
@@ -558,6 +577,9 @@ function App() {
           setResponseVisible={setResponseVisible}
           onBack={handleBack}
           onFollowup={handleFollowup}
+          onZipVisualize={handleVisualizeZip}
+          zipSlides={zipSlides}
+          visualizing={visualizing}
           chatHistory={chatHistory}
           loading={submitting}
           csvColumns={csvColumns}
