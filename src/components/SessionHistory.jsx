@@ -371,7 +371,7 @@ const SessionHistory = ({ isDarkMode = false, onClose, onSessionSelect }) => {
                 </h3>
               </div>
 
-              {sessionData.visualizations?.length === 0 ? (
+              {sessionData.visualizations?.length === 0 && !sessionData.zip_slides?.length ? (
                 <div style={{
                   textAlign: 'center',
                   padding: '2rem',
@@ -380,7 +380,12 @@ const SessionHistory = ({ isDarkMode = false, onClose, onSessionSelect }) => {
                   No visualizations in this session.
                 </div>
               ) : (
-                sessionData.visualizations?.map(renderVisualization)
+                <>
+                  {sessionData.visualizations?.map(renderVisualization)}
+                  {sessionData.zip_slides?.map((src, idx) => (
+                    <img key={idx} src={src} alt={`slide-${idx + 1}`} style={{ maxWidth: '100%', marginBottom: '0.5rem' }} />
+                  ))}
+                </>
               )}
             </div>
           )}

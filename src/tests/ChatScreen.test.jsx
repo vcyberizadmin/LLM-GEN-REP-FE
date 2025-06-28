@@ -22,6 +22,8 @@ describe('ChatScreen', () => {
     chartData: null,
     responseVisible: false,
     setResponseVisible: vi.fn(),
+    onZipVisualize: vi.fn(),
+    zipSlides: [],
   }
 
   it('renders the response section when response is present', () => {
