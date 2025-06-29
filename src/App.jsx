@@ -181,6 +181,12 @@ function App() {
         { id: newId, title: query.slice(0, 40) || 'Untitled', timestamp: Date.now(), query, response: data.response, chartData: data.chartData || null },
         ...prev
       ])
+
+      
+      const autoZip = selectedFiles.find(f => /^[A-Za-z]+-\d{4}\.zip$/i.test(f.name))
+      if (autoZip) {
+        await handleVisualizeZip()
+      }
     } catch (err) {
       setError(err.message)
     } finally {
