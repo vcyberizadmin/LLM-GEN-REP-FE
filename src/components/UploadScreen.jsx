@@ -1,8 +1,11 @@
 import React, { useRef, useState } from 'react'
 import '../styles/UploadScreen.css'
 
+const MAX_FILE_SIZE = 200 * 1024 * 1024 // 200MB
+
 function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, onSubmit, submitting, error, minimalUpload }) {
   const [dragActive, setDragActive] = useState(false)
+  const [sizeError, setSizeError] = useState(null)
   const inputRef = useRef(null)
   const isDarkMode = typeof window !== 'undefined' && document.body.classList.contains('dark-mode')
 
@@ -13,12 +16,17 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
   }
 
   const handleFileChange = (e) => {
+    setSizeError(null)
     const files = Array.from(e.target.files)
     if (files.length > 0) {
       const existingNames = selectedFiles.map(f => f.name)
       const merged = [...selectedFiles]
       files.forEach(f => {
-        if (!existingNames.includes(f.name)) merged.push(f)
+       if (f.size > MAX_FILE_SIZE) {
+          setSizeError(`${f.name} exceeds 20MB limit`)
+        } else {
+          if (!existingNames.includes(f.name)) merged.push(f)
+        }
       })
       onFileChange(merged)
   }
@@ -38,12 +46,17 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
+    setSizeError(null) 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const files = Array.from(e.dataTransfer.files)
       const existingNames = selectedFiles.map(f => f.name)
       const merged = [...selectedFiles]
       files.forEach(f => {
-        if (!existingNames.includes(f.name)) merged.push(f)
+        if (f.size > MAX_FILE_SIZE) {
+          setSizeError(`${f.name} exceeds 20MB limit`)
+        } else {
+          if (!existingNames.includes(f.name)) merged.push(f)
+        }
       })
       onFileChange(merged)
     }
@@ -178,19 +191,27 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
                 gap: '8px'
               }}
             >
-              {selectedFiles.map((file, idx) => (
-                <div key={idx} className="selected-file-label" style={{ display: 'inline-block', position: 'relative', background: isDarkMode ? '#181818' : '#f2f2f2', color: isDarkMode ? '#bbb' : '#232323', borderRadius: 4, padding: '2px 8px', fontSize: 13 }}>
-                  {file.name}
-                  <button type="button" aria-label="Remove file" style={{ marginLeft: 6, background: 'none', border: 'none', color: '#a36a4f', cursor: 'pointer', fontWeight: 'bold', fontSize: 15, position: 'relative', top: 1 }} onClick={e => { e.stopPropagation(); handleRemoveFile(idx) }}>×</button>
-                </div>
-              ))}
+          {selectedFiles.map((file, idx) => (
+            <div key={idx} className="selected-file-label" style={{ display: 'inline-block', position: 'relative', background: isDarkMode ? '#181818' : '#f2f2f2', color: isDarkMode ? '#bbb' : '#232323', borderRadius: 4, padding: '2px 8px', fontSize: 13 }}>
+              {file.name}
+              <button type="button" aria-label="Remove file" style={{ marginLeft: 6, background: 'none', border: 'none', color: '#a36a4f', cursor: 'pointer', fontWeight: 'bold', fontSize: 15, position: 'relative', top: 1 }} onClick={e => { e.stopPropagation(); handleRemoveFile(idx) }}>×</button>
             </div>
-          )}
-          {error && (
-            <div 
-              className="error-message"
-              style={{
-                marginTop: '1rem',
+           ))}
+        </div>
+      )}
+      {sizeError && (
+        <div
+          className="error-message"
+          style={{ marginTop: '1rem', textAlign: 'center', maxWidth: '600px' }}
+        >
+          {sizeError}
+        </div>
+      )}
+      {error && (
+        <div
+          className="error-message"
+          style={{
+            marginTop: '1rem',
                 textAlign: 'center',
                 maxWidth: '600px'
               }}
@@ -255,6 +276,7 @@ function UploadScreen({ selectedFiles = [], onFileChange, query, onQueryChange, 
         </button>
       </form>
       {error && <div className="error-message">{error}</div>}
+      {sizeError && <div className="error-message">{sizeError}</div>}
     </div>
   )
 }
