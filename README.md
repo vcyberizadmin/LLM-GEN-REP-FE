@@ -62,8 +62,15 @@ The backend currently accepts archives up to **20&nbsp;MB** in size.
 
 ## Production Build
 
+This project uses a `vercel.json` file for deployment settings. In Vercel you can
+set the API endpoint by adding **VITE_API_BASE_URL** under
+**Project Settings → Environment Variables**.
+
 ```bash
 npm run build   # Generates static assets in dist/
 ```
 
-Deploy the contents of `dist/` to any static hosting provider (Netlify, Vercel, S3, etc.).  The app will continue pointing to the live back-end on Vercel by default.
+The build output lives in the `dist/` directory. Deploy its contents to any
+static hosting provider (Netlify, Vercel, S3, etc.). When deploying on Vercel the
+build command and output directory are read from `vercel.json`. The app will
+continue pointing to the live back-end on Vercel by default.
